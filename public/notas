@@ -1,0 +1,71 @@
+Crear un modelo
+
+php artisan make:model Book -mf --api
+
+--api para que genere los controles en las ruta api y no web
+
+Usamos REST (API)
+
+rutas
+
+Verbo http    path             nombre
+GET           /books            index
+GET           /books{id}        show
+GET           /books/create     create
+GET           /books            store
+GET           /books/{id}/edit  edit
+PATCH         /books{id}        update
+DELETE        /books{id}        delete
+
+Al ser un API las rutas de creación y de edición de libros no son necesarias, así que nos quedamos con:
+
+Verbo http    path             nombre
+GET           /books            index
+GET           /books{id}        show
+GET           /books            store
+GET           /books/{id}/edit  edit
+DELETE        /books{id}        delete
+
+El siguiente comando en routes/api.php las define automáticamente
+Route::apiResource('books', BookController::class);
+
+Toca definir la base de datos, creándola y añadiendo el nombre y las credenciales en el fichero .env
+
+Realizamos las migraciones para crear las tablas en la base de datos
+
+Hay que definir la estructura del modelo Books en el fichero de migraciones
+
+# php artisan migrate
+
+Lo probamos con 
+
+# php artisan serve
+
+Se han de validar las rutas que reciben parámetros con el método validate()
+
+REALIZACIÓN DE TEST
+
+En Laravel vienen unos tests predefinidos
+
+Los tests se pueden ejecutar usando 
+
+# php artisan test
+
+Descomentar la línea use ... RefreshDatabase que servira para hacer pruebas con datos en la base de datos.
+Al usar RefreshDatabase en cada test se vacía la base de datos
+
+Para definir los test tenemos que añadir el treat
+  /** @test */
+
+Necesitamos una base de datos de test para no machacar los datos que ya tengamos. 
+La definición está en el fichero phpunit.xml y las líneas están comentadas sugiriendo el uso de sqlite en memoria.
+
+En el ejercicio hemos mantenido mysql y cambiado a una base de datos llamada books_test
+
+Eso supone crear la base de datos
+Para rellenar la base de datos usamos el factory definido al crear el modelo Books
+
+Ahora en el test creamos libros usando el factory
+
+jorge@aprendible.com
+
